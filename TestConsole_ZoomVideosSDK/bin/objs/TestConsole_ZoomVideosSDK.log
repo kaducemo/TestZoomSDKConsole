@@ -1,0 +1,9 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: o diretório Intermediate não termina com uma barra à direita. Essa instância de compilação adicionará a barra conforme necessário para permitir a avaliação adequada do Diretório Intermediate.
+  TestConsole_ZoomVideosSDK.cpp
+C:\Local\Estudos\GIT\TestZoomSDK\TestConsole_ZoomVideosSDK\TestConsole_ZoomVideosSDK\TestConsole_ZoomVideosSDK.cpp(69,22): warning C4806: '==': operação não segura: nenhum valor do tipo 'bool' promovido para tipo 'int' pode se igualar à constante fornecida
+  Gerando código
+  0 of 217 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finalizada a geração de código
+  TestConsole_ZoomVideosSDK.vcxproj -> C:\Local\Estudos\GIT\TestZoomSDK\TestConsole_ZoomVideosSDK\bin\TestConsole_ZoomVideosSDK.exe

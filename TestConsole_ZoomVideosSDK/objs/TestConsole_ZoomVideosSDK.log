@@ -1,0 +1,6 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: o diretório Intermediate não termina com uma barra à direita. Essa instância de compilação adicionará a barra conforme necessário para permitir a avaliação adequada do Diretório Intermediate.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: o diretório Output não termina com uma barra à direita. Essa instância de compilação adicionará a barra conforme necessário para permitir a avaliação adequada do Diretório Output.
+  MyListeners.cpp
+  TestConsole_ZoomVideosSDK.cpp
+C:\Local\Estudos\GIT\TestZoomSDK\TestConsole_ZoomVideosSDK\TestConsole_ZoomVideosSDK\TestConsole_ZoomVideosSDK.cpp(72,22): warning C4806: '==': operação não segura: nenhum valor do tipo 'bool' promovido para tipo 'int' pode se igualar à constante fornecida
+LINK : fatal error LNK1181: não foi possível abrir o arquivo de entrada 'videosdk.lib'
