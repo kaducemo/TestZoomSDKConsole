@@ -10,19 +10,20 @@ class MyListeners:
 {
 private:
     /*SDK instance pointer*/
-    IZoomVideoSDK* m_pVideoSDK;
+    //IZoomVideoSDK* m_pVideoSDK;
 
 public:
     /*Constructor*/
     MyListeners(){}
-    MyListeners(ZOOM_VIDEO_SDK_NAMESPACE::IZoomVideoSDK* val)
-        :m_pVideoSDK{ val }
-    {
-        //Adiciona este objeto como listener da instância da SDK
-        m_pVideoSDK->addListener(this);
-    }
+    //MyListeners(ZOOM_VIDEO_SDK_NAMESPACE::IZoomVideoSDK* val)
+    //    :m_pVideoSDK{ val }
+    //{
+    //    //Adiciona este objeto como listener da instância da SDK
+    //    m_pVideoSDK->addListener(this);
+    //}
     ~MyListeners() {}
     
+
     // Herdado por meio de IZoomVideoSDKDelegate
     virtual void onSessionJoin() override;
 
@@ -76,4 +77,4 @@ public:
 
     virtual void onHostAskUnmute() override;
 
-    };
+};
