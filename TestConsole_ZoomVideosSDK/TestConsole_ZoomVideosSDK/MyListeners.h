@@ -6,7 +6,8 @@
 using namespace ZOOM_VIDEO_SDK_NAMESPACE;
 
 class MyListeners:
-    public ZOOM_VIDEO_SDK_NAMESPACE::IZoomVideoSDKDelegate
+    public ZOOM_VIDEO_SDK_NAMESPACE::IZoomVideoSDKDelegate,
+    public ZOOM_VIDEO_SDK_NAMESPACE::IZoomVideoSDKRawDataPipeDelegate
 {
 private:
     /*SDK instance pointer*/
@@ -14,15 +15,11 @@ private:
 
 public:
     /*Constructor*/
+
     MyListeners(){}
-    //MyListeners(ZOOM_VIDEO_SDK_NAMESPACE::IZoomVideoSDK* val)
-    //    :m_pVideoSDK{ val }
-    //{
-    //    //Adiciona este objeto como listener da instância da SDK
-    //    m_pVideoSDK->addListener(this);
-    //}
     ~MyListeners() {}
     
+    ZoomVideoSDKErrors Subscribe(IZoomVideoSDKUser* pUser);
 
     // Herdado por meio de IZoomVideoSDKDelegate
     virtual void onSessionJoin() override;
@@ -76,5 +73,11 @@ public:
     virtual void onCloudRecordingStatus(RecordingStatus status) override;
 
     virtual void onHostAskUnmute() override;
+
+
+    // Herdado por meio de IZoomVideoSDKRawDataPipeDelegate
+    virtual void onRawDataFrameReceived(YUVRawDataI420* data_) override;
+
+    virtual void onRawDataStatusChanged(RawDataStatus status) override;
 
 };

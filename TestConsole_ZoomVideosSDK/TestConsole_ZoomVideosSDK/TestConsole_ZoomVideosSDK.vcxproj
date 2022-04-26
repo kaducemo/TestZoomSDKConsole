@@ -78,7 +78,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)bin\objs</IntDir>
+    <IntDir>$(SolutionDir)bin\objs\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -114,6 +115,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)h\</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,10 +163,13 @@
   <ItemGroup>
     <ClCompile Include="MyListeners.cpp" />
     <ClCompile Include="TestConsole_ZoomVideosSDK.cpp" />
+    <ClCompile Include="ZoomSDKManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IncludeZoomVideoSdk.h" />
     <ClInclude Include="MyListeners.h" />
+    <ClInclude Include="TestConsole_ZoomVideoSDK.h" />
+    <ClInclude Include="ZoomSDKManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,12 +4,12 @@
 
 void MyListeners::onSessionJoin()
 {
-	std::cout << "Login...";
+	std::cout << "\nLogin...";
 }
 
 void MyListeners::onSessionLeave()
 {
-	std::cout << "Logout...";
+	std::cout << "\nLogout...";    
 }
 
 void MyListeners::onError(ZoomVideoSDKErrors errorCode, int detailErrorCode)
@@ -36,7 +36,7 @@ void MyListeners::onError(ZoomVideoSDKErrors errorCode, int detailErrorCode)
 void MyListeners::onUserJoin(IZoomVideoSDKUserHelper* pUserHelper, IVideoSDKVector<IZoomVideoSDKUser*>* userList)
 {
     CString strInfo;
-    IZoomVideoSDKUser* pUser;
+    IZoomVideoSDKUser* pUser = nullptr;
     int count = userList->GetCount();
 
     for (int i = 0; i < count; i++)
@@ -45,8 +45,20 @@ void MyListeners::onUserJoin(IZoomVideoSDKUserHelper* pUserHelper, IVideoSDKVect
         if (!pUser) continue;
 
         strInfo.Format(_T("\nA user joined the session: name=%s"), pUser->getUserName());
-        std::wcout << strInfo.GetString();
-    }      
+        std::wcout << strInfo.GetString();        
+    }
+    if (pUser)
+    {
+        if (!Subscribe(pUser))
+        {
+            strInfo.Format(_T("\nCapturando Pipe de : name=%s"), pUser->getUserName());
+            std::wcout << strInfo.GetString();
+        }
+        else
+        {
+            std::cout << "Falha ao cadastrar PIPE";
+        }
+    }        
 }
     
 
@@ -158,4 +170,49 @@ void MyListeners::onCloudRecordingStatus(RecordingStatus status)
 
 void MyListeners::onHostAskUnmute()
 {
+}
+
+ZoomVideoSDKErrors MyListeners::Subscribe(IZoomVideoSDKUser* pUser)
+{
+    ZoomVideoSDKErrors err = ZoomVideoSDKErrors_Unknown;
+
+    // Set the resolution.
+    ZoomVideoSDKResolution resolution = ZoomVideoSDKResolution_360P;
+
+    // Get the video pipe for the user.
+    IZoomVideoSDKRawDataPipe* pPipe = NULL;
+    pPipe = pUser->GetVideoPipe();
+    if (!pPipe)
+        return err;
+
+    // Call subscribe.
+    err = pPipe->subscribe(resolution, this);
+    return err;
+}
+
+void MyListeners::onRawDataFrameReceived(YUVRawDataI420* data_)
+{
+    // Get frame data resolution.
+    data_->GetStreamWidth();
+    data_->GetStreamHeight();
+
+    // Get frame buffer.
+    data_->GetYBuffer();
+    data_->GetUBuffer();
+    data_->GetVBuffer();
+
+    // Get frame rotation
+    data_->GetRotation();
+}
+
+void MyListeners::onRawDataStatusChanged(RawDataStatus status)
+{
+    if (status == RawData_On)
+    {
+        // Now subscribed to user's data.
+    }
+    else
+    {
+        // No longer subscribed to user's data.
+    }
 }
