@@ -101,8 +101,7 @@ LRESULT CALLBACK mWndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
             if(appState.aWf)
                 SetWindowText(tbOutput, L"Audio Stream Opened!");
             else
-            {
-                
+            {                
                 return 1;
             }
             break;
@@ -284,7 +283,7 @@ bool InitSDK()
     appState.mySdkManager->VirtualMicInitialized = VirtualMicWasInitialized;
     appState.mySdkManager->StartToSendRawAudio = BeginToSendRawAudio;
     appState.mySdkManager->RawAudioStoppedSend = FinishedSendingAudioPacket;
-    /*appState.mySdkManager->VirtualCamInitialized = VirtualCamInitialized;*/
+    appState.mySdkManager->VirtualCamInitialized = VirtualCamInitialized;
     
 
     CString out = "SDK Initialized...";    
@@ -601,36 +600,32 @@ void SendMyAudio(void* pMyID)
 void SendMyRawVideo(void* pMyID)
 {
     
-
     /* for (int i = 0; i < 32000; i++)
          myRawAudioData[i] = i;*/
 
-    int w = 640;
-    int h = 360;
+    int w = 1280;
+    int h = 720;
     int nFrameLength = (w * h) + (w * h) / 4 + (w * h) / 4;
 
     char* myRawVideoData = new char[nFrameLength]{ 0 };
-
+    
+    unsigned int size = appState.vRf->tellg();
+    unsigned int times = size / nFrameLength;
+    appState.vRf->clear();
+    appState.vRf->seekg(0, ios::beg);
+    
     int i = 0;
     while (true)
     {
-        for (i = 0; i < nFrameLength; i++)
+        appState.vRf->read(myRawVideoData, nFrameLength);
+        appState.mySdkManager->SendRawVideo(myRawVideoData, w, h, nFrameLength, 0);
+        i++;
+        if (i == times)
         {
-            appState.aRf->read(&myRawVideoData[i], 1);
-            if (appState.vRf->eof())
-            {
-                appState.vRf->clear();
-                appState.vRf->seekg(0, ios::beg);
-                break;
-            }
-            else
-            {
-                int a = 0;
-                a++;
-            }
-        }
-
-        appState.mySdkManager->SendRawVideo(myRawVideoData, w, h, i, 0);
+            appState.vRf->clear();
+            appState.vRf->seekg(0, ios::beg);
+            i = 0;
+        }        
         Sleep(40);
     }
 
@@ -700,13 +695,13 @@ bool StopRecording()
         vector<IZoomVideoSDKUser*> userList = appState.mySdkManager->GetAllUsers();
         IZoomVideoSDKUser* myUser = userList.at(num - 1);
         appState.mySdkManager->Unsubscribe(myUser);
-        SetWindowText(tbOutput, L"User Unsubcribed");
+        SetWindowText(tbOutput, L"User Unsubscribed");
         appState.record = false;        
         return true;
     }
     catch (exception e)
     {
-        SetWindowText(tbOutput, L"User cannot be Subcribed");
+        SetWindowText(tbOutput, L"User cannot be Subscribed");
     }
     return false;
 }
@@ -865,14 +860,12 @@ void BeginToSendRawAudio()
 void VirtualCamInitialized()
 {
     appState.virtualCamInitialized = true;
-    int a = 0;
-    a += 2;
 
-    //char fileName[20] = "audioSend.raw\0";
-    //appState.vRf = new ifstream(fileName, ios::in | ios::binary);
-    //if (!appState.vRf)
-    //    cout << "Cannot open file!" << endl;
-    //int i = 1;
-    //_beginthread(SendMyRawVideo, 0, &i);
+    char fileName[20] = "videoSend.yuv\0";
+    appState.vRf = new ifstream(fileName, ios::in | ios::binary | ios::ate);
+    if (!appState.vRf)
+        cout << "Cannot open file!" << endl;
+    int i = 1;
+    _beginthread(SendMyRawVideo, 0, &i);
 }
 
