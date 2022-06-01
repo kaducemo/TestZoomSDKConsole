@@ -20,8 +20,7 @@ class ZoomSDKManager:
 
 private:
 	/*SDK instance pointer*/
-	IZoomVideoSDK* m_pVideoSDK = nullptr;
-	IZoomVideoSDKSession* pSession = nullptr;		
+	IZoomVideoSDK* m_pVideoSDK = nullptr;	
 	IZoomVideoSDKAudioSender* virtual_audio_sender_ = nullptr;
 	IZoomVideoSDKVideoSender* video_sender_ = nullptr;
 

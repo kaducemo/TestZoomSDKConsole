@@ -38,6 +38,7 @@
 #define BT_ENABLE_VIRTUAL_SPEAKER_EVENT 18
 #define BT_STOP_SENDING_R_AUDIO_EVENT   19
 #define BT_ENABLE_VIRTUAL_CAM_EVENT     20
+#define CBX_ENABLE_VIDEO_EVENT          21
 
 using namespace std;
 using namespace ZOOM_VIDEO_SDK_NAMESPACE;

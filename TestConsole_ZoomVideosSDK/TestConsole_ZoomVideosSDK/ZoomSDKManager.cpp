@@ -28,7 +28,7 @@ void ZoomSDKManager::onSessionJoin()
 }
 
 void ZoomSDKManager::onSessionLeave()
-{
+{	
 	IsConnected = false;
 	std::cout << "\nLogged OUT...\n";
 }
@@ -57,11 +57,13 @@ void ZoomSDKManager::onError(ZoomVideoSDKErrors errorCode, int detailErrorCode)
 void ZoomSDKManager::onUserJoin(IZoomVideoSDKUserHelper* pUserHelper, IVideoSDKVector<IZoomVideoSDKUser*>* userList)
 {
 	UsersListChanged();	
+	int a = 1;
 }
 
 void ZoomSDKManager::onUserLeave(IZoomVideoSDKUserHelper* pUserHelper, IVideoSDKVector<IZoomVideoSDKUser*>* userList)
 {
 	UsersListChanged();	
+	int a = 0;
 }
 
 void ZoomSDKManager::onUserVideoStatusChanged(IZoomVideoSDKVideoHelper* pVideoHelper, IVideoSDKVector<IZoomVideoSDKUser*>* userList)
@@ -234,9 +236,7 @@ IZoomVideoSDK* ZoomSDKManager::GetSdkInstance()
 
 bool ZoomSDKManager::InitSession(ZoomVideoSDKSessionContext sessionContext)
 {
-	pSession = m_pVideoSDK->joinSession(sessionContext);
-
-	if (!pSession)
+	if (!m_pVideoSDK->joinSession(sessionContext))
 	{
 		CString cstrInfo;
 		cstrInfo.Format(_T("Failed to join session"));
@@ -273,14 +273,20 @@ void ZoomSDKManager::MyZoomMessageLoop()
 
 void ZoomSDKManager::LeaveSession()
 {
-	m_pVideoSDK->leaveSession(false);
-	std::cout << "\nUser LEFT the session...";
+	if (m_pVideoSDK)
+	{
+		m_pVideoSDK->leaveSession(false);
+		std::cout << "\nUser LEFT the session...";
+	}
 }
 
 void ZoomSDKManager::TerminateSession()
 {
-	m_pVideoSDK->leaveSession(true);
-	std::cout << "\nUser TERMINATED the session...";	
+	if (m_pVideoSDK)
+	{
+		m_pVideoSDK->leaveSession(true);
+		std::cout << "\nUser TERMINATED the session...";
+	}	
 }
 
 void ZoomSDKManager::onMicInitialize(ZOOM_VIDEO_SDK_NAMESPACE::IZoomVideoSDKAudioSender* rawdata_sender)

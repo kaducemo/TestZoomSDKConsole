@@ -28,11 +28,59 @@ MyAppState_t appState =
 };
 
 //Controls
-HWND tbJWT, tbUsers, tbOutput, tbCameras, tbParam1, tbParam2, tbVideoFileOuptut, tbAudioFileOutput, tbMics, tbSpks;
+HWND tbJWT, tbUsers, tbOutput, tbCameras, tbParam1, tbParam2, tbVideoFileOuptut, tbAudioFileOutput, tbMics, tbSpks, tbSessao, tbUserName, tbPassword;
 HBRUSH hbrBkgnd = NULL; //Fills Static Controls
 
 int main()
 {  
+    ////Nome do pipe    
+    //wchar_t pipeName[30] = L"\\\\.\\pipe\\MeuPipe\0";
+
+    //////Handler do pipe
+    //HANDLE hPipe;
+    //
+    //cout << "Tentando conectar-se ao servidor..." << endl;
+
+    //while (true) 
+    //{
+    //    //Tenta obter uma conexão com o named pipe
+    //    hPipe = CreateFile(pipeName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+
+    //    //Se não tiver sucesso na conexão, espera 5 segundos para tentar se conectar novamente
+    //    if (hPipe == INVALID_HANDLE_VALUE) 
+    //    {
+    //        cout << "Tentando se conectar novamente em 5 segundos..." << endl;
+    //        Sleep(5000);
+    //    }
+    //    else 
+    //    {
+    //        cout << "Conectado!" << endl;
+    //        break;
+    //    }
+    //}
+    //string mensagemEnviada = "";
+    //cout << "Digite o texto a ser enviado: ";
+    ////Captura a entrada do usuário
+    //getline(cin, mensagemEnviada);
+
+    //while (mensagemEnviada != "sair") 
+    //{
+    //    DWORD tamanhoMensagemEnviada = mensagemEnviada.size();
+    //    WriteFile(hPipe, mensagemEnviada.c_str(), tamanhoMensagemEnviada, &tamanhoMensagemEnviada, NULL);
+    //    cout << "Digite o texto a ser enviado: ";
+    //    getline(cin, mensagemEnviada);
+    //}
+
+
+
+
+
+
+
+
+
+
+
     CString myClassName = "MyWindow";
     if (!RegisterMyWindowClass(myClassName))
         return -1; //Error
@@ -148,6 +196,9 @@ LRESULT CALLBACK mWndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
         case BT_ENABLE_VIRTUAL_CAM_EVENT:
             EnableVirtualCam();
             break;
+        case CBX_ENABLE_VIDEO_EVENT:
+
+            break;
         }
     break;
 
@@ -205,13 +256,13 @@ bool AddControls(HWND hwnd)
     
     aux += (60 + 20);
     CreateWindowW(L"static", L"Video output file: ", WS_VISIBLE | WS_CHILD, 10, aux, 150, 20, hwnd, NULL, NULL, NULL);
-    tbVideoFileOuptut = CreateWindowW(L"edit", L"video.yuv", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_CENTER, 125, aux-7, 200, 30, hwnd, NULL, NULL, NULL);
-    CreateWindowW(L"button", L"Set Video File ", WS_VISIBLE | WS_CHILD, 355, aux-10, 150, 33, hwnd, (HMENU)BT_SET_VIDEO_FILE_EVENT, NULL, NULL);
+    tbVideoFileOuptut = CreateWindowW(L"edit", L"video.yuv", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_CENTER, 125, aux, 200, 20, hwnd, NULL, NULL, NULL);
+    CreateWindowW(L"button", L"Set Video File ", WS_VISIBLE | WS_CHILD, 355, aux, 150, 20, hwnd, (HMENU)BT_SET_VIDEO_FILE_EVENT, NULL, NULL);
 
     aux += (20 + 20);
     CreateWindowW(L"static", L"Audio output file: ", WS_VISIBLE | WS_CHILD, 10, aux, 150, 20, hwnd, NULL, NULL, NULL);
-    tbAudioFileOutput = CreateWindowW(L"edit", L"audio.raw", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_CENTER, 125, aux - 7, 200, 30, hwnd, NULL, NULL, NULL);
-    CreateWindowW(L"button", L"Set Audio File ", WS_VISIBLE | WS_CHILD, 355, aux-10, 150, 33, hwnd, (HMENU)BT_SET_AUDIO_FILE_EVENT, NULL, NULL);
+    tbAudioFileOutput = CreateWindowW(L"edit", L"audio.raw", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_CENTER, 125, aux, 200, 20, hwnd, NULL, NULL, NULL);
+    CreateWindowW(L"button", L"Set Audio File ", WS_VISIBLE | WS_CHILD, 355, aux, 150, 20, hwnd, (HMENU)BT_SET_AUDIO_FILE_EVENT, NULL, NULL);
 
     aux += (20+20);
     CreateWindowW(L"static", L"Cameras: ", WS_VISIBLE | WS_CHILD, 10, aux, 80, 20, hwnd, NULL, NULL, NULL);    
@@ -222,9 +273,9 @@ bool AddControls(HWND hwnd)
     tbOutput = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 250, aux, 900-250, 70, hwnd, NULL, NULL, NULL);    aux += (70 + 10);
     CreateWindowW(L"static", L"Users: ", WS_VISIBLE | WS_CHILD, 10, aux, 50, 20, hwnd, NULL, NULL, NULL);
     CreateWindowW(L"static", L"Commands: ", WS_VISIBLE | WS_CHILD, 250, aux, 80, 20, hwnd, NULL, NULL, NULL);
-    CreateWindowW(L"static", L"Parameters: ", WS_VISIBLE | WS_CHILD, 250 + 30 + 160, aux, 80, 20, hwnd, NULL, NULL, NULL);
-    tbParam1 = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 250 + 30 + 160 + 100, aux-5, 30, 30, hwnd, NULL, NULL, NULL);
-    tbParam2 = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 250 + 30 + 160 + 100+ 10 + 30, aux-5, 30, 30, hwnd, NULL, NULL, NULL);
+    CreateWindowW(L"static", L"Parameters: ", WS_VISIBLE | WS_CHILD, 250 + 20 + 160, aux, 80, 20, hwnd, NULL, NULL, NULL);
+    tbParam1 = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 250 + 170 + 100, aux, 30, 20, hwnd, NULL, NULL, NULL);
+    tbParam2 = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER, 250 + 40 + 170 + 100, aux, 30, 20, hwnd, NULL, NULL, NULL);
     
     aux += (20 + 10);
     tbUsers = CreateWindowW(L"edit", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE, 10, aux, 230, 70, hwnd, NULL, NULL, NULL);
@@ -235,8 +286,7 @@ bool AddControls(HWND hwnd)
     CreateWindowW(L"button", L"Refresh Audio Inputs", WS_VISIBLE | WS_CHILD, 250, aux+10+30, 160, 30, hwnd, (HMENU)BT_REFRESH_AUD_INPUT_EVENT, NULL, NULL);        
     CreateWindowW(L"button", L"Refresh Cam List", WS_VISIBLE | WS_CHILD, 250, aux+20+60, 160, 30, hwnd, (HMENU)(BT_GET_CAM_LIST_EVENT), NULL, NULL);    
     CreateWindowW(L"button", L"Refresh Audio Outputs", WS_VISIBLE | WS_CHILD, 250 + 160 + 20, aux + 20 + 60, 160, 30, hwnd, (HMENU)BT_REFRESH_AUD_OUTPUT_EVENT, NULL, NULL);
-    CreateWindowW(L"static", L"Mics: ", WS_VISIBLE | WS_CHILD, 10, aux + 20 + 60 + 5, 80, 20, hwnd, NULL, NULL, NULL);
-    
+    CreateWindowW(L"static", L"Mics: ", WS_VISIBLE | WS_CHILD, 10, aux + 20 + 60 + 5, 80, 20, hwnd, NULL, NULL, NULL);    
 
     aux += (30 + 10);
     CreateWindowW(L"button", L"Get Users", WS_VISIBLE | WS_CHILD, 250, aux + 20 + 60, 160, 30, hwnd, (HMENU)(BT_GET_USERS_EVENT), NULL, NULL);
@@ -260,6 +310,19 @@ bool AddControls(HWND hwnd)
     aux += (30 + 10);
     CreateWindowW(L"button", L"Subscribe User Pipe", WS_VISIBLE | WS_CHILD, 250, aux, 160, 30, hwnd, (HMENU)BT_SET_VIDEO_PIPE_EVENT, NULL, NULL);
     CreateWindowW(L"button", L"Virtual Mic", WS_VISIBLE | WS_CHILD, 250 + 160 + 20, aux, 160, 30, hwnd, (HMENU)BT_ENABLE_VIRTUAL_MIC_EVENT, NULL, NULL);
+
+    aux += (30 + 10);
+    CreateWindowW(L"static", L"Session: ", WS_VISIBLE | WS_CHILD, 10, aux+3, 70, 20, hwnd, NULL, NULL, NULL);
+    tbSessao = CreateWindowW(L"edit", L"sessao", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_CENTER, 80, aux, 160, 20, hwnd, NULL, NULL, NULL);
+
+    CreateWindowW(L"static", L"User: ", WS_VISIBLE | WS_CHILD, 250, aux+3, 40, 20, hwnd, NULL, NULL, NULL);
+    tbUserName = CreateWindowW(L"edit", L"Kadu", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_CENTER, 300, aux, 110, 20, hwnd, NULL, NULL, NULL);
+
+    CreateWindowW(L"static", L"Password: ", WS_VISIBLE | WS_CHILD, 430, aux+3, 70, 20, hwnd, NULL, NULL, NULL);
+    tbPassword = CreateWindowW(L"edit", L"" , WS_VISIBLE | WS_CHILD | WS_BORDER | ES_CENTER, 510, aux, 80, 20, hwnd, NULL, NULL, NULL);
+
+    //CreateWindowEx(NULL, BUTTON, "Checkbox", BS_CHECKBOX, xPos, yPos, width, height, parent, NULL, NULL, NULL);
+    //CreateWindowW(L"button", L"Checkbox", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 445, 320, 50, 30, hwnd, (HMENU)CBX_ENABLE_VIDEO_EVENT, NULL, NULL);
 
     return true;
 }
@@ -288,15 +351,33 @@ bool InitSDK()
 
     CString out = "SDK Initialized...";    
     SetWindowTextW(tbOutput, out);
-    SetWindowTextW(tbJWT, L"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoianlGMDlRZkxHNW83N2N6Zm9HTU4xbmxtTzQyYVRqN0xTNkFuIiwidmVyc2lvbiI6MSwicm9sZV90eXBlIjoxLCJpYXQiOjE2NTA4OTA2NTEsImV4cCI6MTY1MTA2MzQ1MSwidHBjIjoiU2Vzc2FvIn0.wQ7VngPIXTnqME0W3o-c-9oe24sMbOBZOl9wTT3g1rw");
+    SetWindowTextW(tbJWT, L"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoianlGMDlRZkxHNW83N2N6Zm9HTU4xbmxtTzQyYVRqN0xTNkFuIiwidmVyc2lvbiI6MSwicm9sZV90eXBlIjoxLCJpYXQiOjE2NTE4NDI3MjIsImV4cCI6MTY1MjAxNTUyMiwidHBjIjoiU2Vzc2FvIn0.o-WOyjsqEhqaW5nANqluO4HvDYaYSkXyhk9K_Fnd--k");
     return true;
 }
 
 bool JoinOrCreateSession()
 {
     //Session Context configuration
-    appState.sessionContext.sessionName = L"sessao";
-    appState.sessionContext.userName = L"Kadu";
+    wchar_t aux[50] = { 0 };
+    GetWindowText(tbSessao, aux, 25);
+    appState.sessionContext.sessionName = aux;
+    CString auxSessão(aux);
+
+    
+    memset(aux, '\0', 50);
+    GetWindowText(tbUserName, aux, 25);
+    appState.sessionContext.userName = aux;
+    CString auxUserName(aux);
+    
+    memset(aux, '\0', 50);
+    GetWindowText(tbPassword, aux, 25);
+    if(aux[0] != '\0') //So a Password was set
+        appState.sessionContext.sessionPassword = aux;
+    CString auxPwd(aux);    
+
+    appState.sessionContext.sessionName = auxSessão;
+    appState.sessionContext.userName = auxUserName;
+
     
     // JWT for this session.
     wchar_t jwt[350] = { 0 };
@@ -528,7 +609,7 @@ bool GetUsers(HWND hwnd)
 {
     IZoomVideoSDKSession* session = appState.mySdkManager->GetSdkInstance()->getSessionInfo();
     
-    if (session)
+    if (appState.mySdkManager->IsConnected)
     {
         vector<IZoomVideoSDKUser*> userList = appState.mySdkManager->GetAllUsers();
         CString aux = "", out = "";
@@ -544,6 +625,7 @@ bool GetUsers(HWND hwnd)
     }
     else
     {
+        SetWindowTextW(hwnd, L"");
         return false;
     }    
 }
@@ -750,6 +832,12 @@ bool MuteOrUnmuteUser(HWND hwnd)
     return false;
 }
 
+bool EnableOrDisableUserVideo()
+{
+   
+    return false;
+}
+
 bool EnableVirtualMic()
 {      
     appState.sessionContext.virtualAudioMic = appState.mySdkManager;
@@ -770,6 +858,8 @@ bool EnableVirtualCam()
     SetWindowText(tbOutput, L"Virtual Camera Enabled");
     return true;
 }
+
+
 
 /*Callbacks*/
 void UserListHasChanged()
